@@ -20,8 +20,19 @@ class TasksTableViewController: UITableViewController {
 			return []
 		}
 	}
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		tableView.reloadData()
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "ShowDetail" {
+			let detailVC = segue.destination as! TaskDetailViewController
+			if let indexPath = tableView.indexPathForSelectedRow {
+				detailVC.task = tasks[indexPath.row]
+			}
+		}
 	}
 }
 
