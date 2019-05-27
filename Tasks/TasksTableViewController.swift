@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TasksTableViewController.swift
 //  Tasks
 //
 //  Created by Michael Redig on 5/27/19.
@@ -8,13 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class TasksTableViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
 	}
-
-
 }
 
