@@ -25,8 +25,8 @@ class TaskDetailViewController: UIViewController {
 	}
 
 	private func updateViews() {
+		title = task?.name ?? "Create Task"
 		guard isViewLoaded, let task = task else { return }
-		title = task.name ?? "Create Task"
 		nameTextField.text = task.name
 		notesTextView.text = task.notes
 		priorityControl.selectedSegmentIndex = Int(task.priority)

@@ -14,7 +14,7 @@ class TasksTableViewController: UITableViewController {
 	lazy var fetchedResultsController: NSFetchedResultsController<Task> = {
 		let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
 		fetchRequest.sortDescriptors = [
-										NSSortDescriptor(key: "priority", ascending: true),
+										NSSortDescriptor(key: "priority", ascending: false),
 										NSSortDescriptor(key: "name", ascending: true)
 										]
 		let fetchedResultsContoller = NSFetchedResultsController(fetchRequest: fetchRequest,
