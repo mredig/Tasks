@@ -11,7 +11,8 @@ import UIKit
 class TaskDetailViewController: UIViewController {
 	@IBOutlet var nameTextField: UITextField!
 	@IBOutlet var notesTextView: UITextView!
-
+	@IBOutlet var priorityControl: UISegmentedControl!
+	
 	var task: Task? {
 		didSet {
 			updateViews()
@@ -24,25 +25,30 @@ class TaskDetailViewController: UIViewController {
 	}
 
 	private func updateViews() {
-		guard isViewLoaded else { return }
-		title = task?.name ?? "Create Task"
-		nameTextField.text = task?.name
-		notesTextView.text = task?.notes
+		guard isViewLoaded, let task = task else { return }
+		title = task.name ?? "Create Task"
+		nameTextField.text = task.name
+		notesTextView.text = task.notes
+		priorityControl.selectedSegmentIndex = Int(task.priority)
 	}
 
 	@IBAction func save(_ sender: UIBarButtonItem) {
 		guard let name = nameTextField.text, !name.isEmpty else { return }
 		let notes = notesTextView.text
 
+		let priorityIndex = priorityControl.selectedSegmentIndex
+		let priority = TaskPriority(rawValue: Int16(priorityIndex)) ?? TaskPriority.normal
+
 		if let task = task {
 			// edit existing task
 			task.name = name
 			task.notes = notes
+			task.priority = priority.rawValue
 		} else {
 			//create new task
 
 			// initializing the object is enough for coredata to actually incorporate the item in its context (not saved to disk though)
-			_ = Task(name: name, notes: notes)
+			_ = Task(name: name, notes: notes, priority: priority)
 		}
 
 		// saved to disk here

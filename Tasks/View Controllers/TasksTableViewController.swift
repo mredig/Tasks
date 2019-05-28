@@ -25,7 +25,7 @@ class TasksTableViewController: UITableViewController {
 		super.viewWillAppear(animated)
 		tableView.reloadData()
 	}
-	
+
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "ShowDetail" {
 			let detailVC = segue.destination as! TaskDetailViewController
@@ -48,5 +48,21 @@ extension TasksTableViewController {
 		cell.textLabel?.text = task.name
 
 		return cell
+	}
+
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
+			let task = tasks[indexPath.row]
+			let moc = CoreDataStack.shared.mainContext
+			//save in memory
+			moc.delete(task)
+			//write to disk
+			do {
+				try moc.save()
+			} catch {
+				print("error saving core data:\(error)")
+			}
+			tableView.deleteRows(at: [indexPath], with: .automatic)
+		}
 	}
 }

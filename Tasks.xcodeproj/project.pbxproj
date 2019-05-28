@@ -30,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		330EC7C8229D95220048C67E /* Tasks 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Tasks 2.xcdatamodel"; sourceTree = "<group>"; };
 		33C85984229C6F1400A0AD87 /* Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33C85987229C6F1400A0AD87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33C85989229C6F1400A0AD87 /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
@@ -502,9 +503,10 @@
 		33C859A9229C72C200A0AD87 /* Tasks.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				330EC7C8229D95220048C67E /* Tasks 2.xcdatamodel */,
 				33C859AA229C72C200A0AD87 /* Tasks.xcdatamodel */,
 			);
-			currentVersion = 33C859AA229C72C200A0AD87 /* Tasks.xcdatamodel */;
+			currentVersion = 330EC7C8229D95220048C67E /* Tasks 2.xcdatamodel */;
 			path = Tasks.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
