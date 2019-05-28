@@ -14,6 +14,19 @@ enum TaskPriority: Int16, CaseIterable {
 	case normal
 	case high
 	case critical
+
+	var stringValue: String {
+		switch self {
+		case .low:
+			return "low"
+		case .normal:
+			return "normal"
+		case .high:
+			return "high"
+		case .critical:
+			return "critical"
+		}
+	}
 }
 
 extension Task {
