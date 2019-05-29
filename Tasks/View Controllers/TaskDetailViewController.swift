@@ -12,7 +12,8 @@ class TaskDetailViewController: UIViewController {
 	@IBOutlet var nameTextField: UITextField!
 	@IBOutlet var notesTextView: UITextView!
 	@IBOutlet var priorityControl: UISegmentedControl!
-	
+
+	var taskController: TaskController?
 	var task: Task? {
 		didSet {
 			updateViews()
@@ -44,11 +45,22 @@ class TaskDetailViewController: UIViewController {
 			task.name = name
 			task.notes = notes
 			task.priority = priority.rawValue
+			taskController?.put(task: task, completion: { (result: Result<TaskRepresentation, NetworkError>) in
+				do {
+					try result.get()
+				} catch {
+					print("error putting data: \(error)")
+				}
+			})
 		} else {
-			//create new task
-
-			// initializing the object is enough for coredata to actually incorporate the item in its context (not saved to disk though)
-			_ = Task(name: name, notes: notes, priority: priority)
+			let task = Task(name: name, notes: notes, priority: priority)
+			taskController?.put(task: task, completion: { (result: Result<TaskRepresentation, NetworkError>) in
+				do {
+					try result.get()
+				} catch {
+					print("error putting data: \(error)")
+				}
+			})
 		}
 
 		// saved to disk here

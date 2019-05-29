@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		335D7D0B229EEBF2005D5A20 /* TaskRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335D7D0A229EEBF2005D5A20 /* TaskRepresentation.swift */; };
+		335D7D0D229EF292005D5A20 /* NetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335D7D0C229EF292005D5A20 /* NetworkHandler.swift */; };
+		335D7D10229EF2C8005D5A20 /* TaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335D7D0F229EF2C8005D5A20 /* TaskController.swift */; };
+		335D7D17229F3038005D5A20 /* UIAlertController+NetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 335D7D16229F3038005D5A20 /* UIAlertController+NetError.swift */; };
 		33C85988229C6F1400A0AD87 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C85987229C6F1400A0AD87 /* AppDelegate.swift */; };
 		33C8598A229C6F1400A0AD87 /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C85989229C6F1400A0AD87 /* TasksTableViewController.swift */; };
 		33C8598D229C6F1400A0AD87 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33C8598B229C6F1400A0AD87 /* Main.storyboard */; };
@@ -34,6 +37,9 @@
 		330EC7C8229D95220048C67E /* Tasks 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Tasks 2.xcdatamodel"; sourceTree = "<group>"; };
 		335D7D09229EE78D005D5A20 /* Tasks 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Tasks 3.xcdatamodel"; sourceTree = "<group>"; };
 		335D7D0A229EEBF2005D5A20 /* TaskRepresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRepresentation.swift; sourceTree = "<group>"; };
+		335D7D0C229EF292005D5A20 /* NetworkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkHandler.swift; sourceTree = "<group>"; };
+		335D7D0F229EF2C8005D5A20 /* TaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskController.swift; sourceTree = "<group>"; };
+		335D7D16229F3038005D5A20 /* UIAlertController+NetError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+NetError.swift"; sourceTree = "<group>"; };
 		33C85984229C6F1400A0AD87 /* Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33C85987229C6F1400A0AD87 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		33C85989229C6F1400A0AD87 /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +74,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		335D7D0E229EF2AE005D5A20 /* Model Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				335D7D0F229EF2C8005D5A20 /* TaskController.swift */,
+			);
+			path = "Model Controllers";
+			sourceTree = "<group>";
+		};
 		33C8597B229C6F1400A0AD87 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +104,9 @@
 			isa = PBXGroup;
 			children = (
 				33C85987229C6F1400A0AD87 /* AppDelegate.swift */,
+				335D7D0C229EF292005D5A20 /* NetworkHandler.swift */,
+				335D7D16229F3038005D5A20 /* UIAlertController+NetError.swift */,
+				335D7D0E229EF2AE005D5A20 /* Model Controllers */,
 				33C859AC229C72D900A0AD87 /* View Controllers */,
 				33C859AD229C72E200A0AD87 /* Models */,
 				33C8598B229C6F1400A0AD87 /* Main.storyboard */,
@@ -230,13 +247,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				335D7D17229F3038005D5A20 /* UIAlertController+NetError.swift in Sources */,
 				33C859AF229C742900A0AD87 /* CoreDataStack.swift in Sources */,
 				33C859AB229C72C200A0AD87 /* Tasks.xcdatamodeld in Sources */,
 				33C859B1229C784C00A0AD87 /* Task+Convenience.swift in Sources */,
 				33C859A8229C6FE900A0AD87 /* TaskDetailViewController.swift in Sources */,
+				335D7D10229EF2C8005D5A20 /* TaskController.swift in Sources */,
 				335D7D0B229EEBF2005D5A20 /* TaskRepresentation.swift in Sources */,
 				33C8598A229C6F1400A0AD87 /* TasksTableViewController.swift in Sources */,
 				33C85988229C6F1400A0AD87 /* AppDelegate.swift in Sources */,
+				335D7D0D229EF292005D5A20 /* NetworkHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

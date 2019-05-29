@@ -11,6 +11,8 @@ import CoreData
 
 class TasksTableViewController: UITableViewController {
 
+	let taskController = TaskController()
+
 	lazy var fetchedResultsController: NSFetchedResultsController<Task> = {
 		let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
 		fetchRequest.sortDescriptors = [
@@ -33,15 +35,27 @@ class TasksTableViewController: UITableViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		taskController.fetchTasksFromserver { [weak self] (result: Result<[TaskRepresentation], NetworkError>) in
+			DispatchQueue.main.async {
+				do {
+					_ = try result.get()
+					self?.tableView.reloadData()
+					print("updated")
+				} catch {
+					NSLog("error fetching tasks: \(error)")
+				}
+			}
+		}
 		tableView.reloadData()
 	}
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "ShowDetail" {
-			let detailVC = segue.destination as! TaskDetailViewController
-			if let indexPath = tableView.indexPathForSelectedRow {
-				detailVC.task = fetchedResultsController.object(at: indexPath)
-
+		if let detailVC = segue.destination as? TaskDetailViewController {
+			detailVC.taskController = taskController
+			if segue.identifier == "ShowDetail" {
+				if let indexPath = tableView.indexPathForSelectedRow {
+					detailVC.task = fetchedResultsController.object(at: indexPath)
+				}
 			}
 		}
 	}

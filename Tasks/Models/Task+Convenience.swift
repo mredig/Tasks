@@ -53,6 +53,15 @@ extension Task {
 		self.identifier = identifier
 	}
 
+	func setPriority(priority: TaskPriority) {
+		self.priority = priority.rawValue
+	}
+
+	func setPriority(str: String) {
+		guard let priority = TaskPriority.fromStringValue(stringValue: str) else { return }
+		self.priority = priority.rawValue
+	}
+
 	//used to get task from firebase
 	convenience init?(taskRepresentation: TaskRepresentation, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
 		guard let priority = TaskPriority.fromStringValue(stringValue: taskRepresentation.priority),

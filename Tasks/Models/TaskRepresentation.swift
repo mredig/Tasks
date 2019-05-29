@@ -14,3 +14,7 @@ struct TaskRepresentation: Codable {
 	let priority: String
 	let identifier: String
 }
+
+struct TaskRepresentationMessage: Codable {
+	let message: String
+}
