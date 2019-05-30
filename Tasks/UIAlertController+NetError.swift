@@ -39,7 +39,7 @@ extension UIAlertController {
 			case .urlInvalid(let stringURL):
 				var info = ""
 				if let unwrapped = stringURL {
-					 info = "'\(unwrapped)'"
+					info = "'\(unwrapped)'"
 				}
 				message = "An invalid request was attempted. \(info)"
 			}
@@ -80,5 +80,11 @@ extension UIAlertController {
 		default:
 			return "There was an error retrieving data from the server. If this issue persists, please inform the developer and give them this HTTP error code: \(statusCode)"
 		}
+	}
+}
+
+extension URL {
+	var request: URLRequest {
+		return URLRequest(url: self)
 	}
 }

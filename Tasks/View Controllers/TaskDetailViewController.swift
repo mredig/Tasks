@@ -27,9 +27,19 @@ class TaskDetailViewController: UIViewController {
 
 	private func updateViews() {
 		title = task?.name ?? "Create Task"
+
+		var name: String?
+		var notes: String?
+		
+		task?.managedObjectContext?.performAndWait {
+			name = task?.name
+			notes = task?.notes
+		}
+
 		guard isViewLoaded, let task = task else { return }
-		nameTextField.text = task.name
-		notesTextView.text = task.notes
+
+		nameTextField.text = name
+		notesTextView.text = notes
 		priorityControl.selectedSegmentIndex = Int(task.priority)
 	}
 
@@ -40,35 +50,37 @@ class TaskDetailViewController: UIViewController {
 		let priorityIndex = priorityControl.selectedSegmentIndex
 		let priority = TaskPriority(rawValue: Int16(priorityIndex)) ?? TaskPriority.normal
 
-		if let task = task {
-			// edit existing task
-			task.name = name
-			task.notes = notes
-			task.priority = priority.rawValue
-			taskController?.put(task: task, completion: { (result: Result<TaskRepresentation, NetworkError>) in
-				do {
-					try result.get()
-				} catch {
-					print("error putting data: \(error)")
-				}
-			})
-		} else {
-			let task = Task(name: name, notes: notes, priority: priority)
-			taskController?.put(task: task, completion: { (result: Result<TaskRepresentation, NetworkError>) in
-				do {
-					try result.get()
-				} catch {
-					print("error putting data: \(error)")
-				}
-			})
-		}
+		CoreDataStack.shared.mainContext.performAndWait {
+			if let task = task {
+				// edit existing task
+				task.name = name
+				task.notes = notes
+				task.priority = priority.rawValue
+				taskController?.put(task: task, completion: { (result: Result<TaskRepresentation, NetworkError>) in
+					do {
+						_ = try result.get()
+					} catch {
+						print("error putting data: \(error)")
+					}
+				})
+			} else {
+				let task = Task(name: name, notes: notes, priority: priority)
+				taskController?.put(task: task, completion: { (result: Result<TaskRepresentation, NetworkError>) in
+					do {
+						_ = try result.get()
+					} catch {
+						print("error putting data: \(error)")
+					}
+				})
+			}
 
-		// saved to disk here
-		let moc = CoreDataStack.shared.mainContext
-		do {
-			try moc.save()
-		} catch {
-			print("error saving managed object context: \(error)")
+			// saved to disk here
+			let moc = CoreDataStack.shared.mainContext
+			do {
+				try CoreDataStack.shared.save(context: moc)
+			} catch {
+				print("error saving managed object context: \(error)")
+			}
 		}
 		navigationController?.popViewController(animated: true)
 	}

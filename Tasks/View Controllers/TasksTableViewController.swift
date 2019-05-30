@@ -90,16 +90,28 @@ extension TasksTableViewController {
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			let task = fetchedResultsController.object(at: indexPath)
-			let moc = CoreDataStack.shared.mainContext
+
+			// delete remote
+			taskController.delete(task: task) { [weak self] (result: Result<Data?, NetworkError>) in
+				DispatchQueue.main.async {
+					do {
+						_ = try result.get()
+					} catch {
+						let alert = UIAlertController(error: error)
+						self?.present(alert, animated: true)
+					}
+				}
+			}
+
 			//save in memory
-			moc.delete(task)
+			guard let context = task.managedObjectContext else { return }
+			context.delete(task)
 			//write to disk
 			do {
-				try moc.save()
+				try CoreDataStack.shared.save(context: context)
 			} catch {
 				print("error saving core data:\(error)")
 			}
-			tableView.deleteRows(at: [indexPath], with: .automatic)
 		}
 	}
 }

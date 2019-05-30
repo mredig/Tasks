@@ -36,10 +36,30 @@ class TaskController {
 			completion(.failure(.dataCodingError(specifically: error)))
 			return
 		}
-		 try? saveToPersistentStore()
+		guard let context = task.managedObjectContext else {
+			completion(.failure(.otherError(error: NSError())))
+			return
+		}
+		try? CoreDataStack.shared.save(context: context)
 
 		networkHandler.transferMahCodableDatas(with: request, completion: completion)
 
+	}
+
+	func delete(task: Task, completion: @escaping (Result<Data?, NetworkError>) -> Void) {
+		var id: String?
+		task.managedObjectContext!.performAndWait {
+			id = task.identifier?.uuidString ?? UUID().uuidString
+		}
+		guard let identifier = id else {
+			completion(.failure(.otherError(error: NSError())))
+			return
+		}
+		let deleteURL = baseURL.appendingPathComponent(identifier).appendingPathExtension("json")
+		var request = deleteURL.request
+		request.httpMethod = HTTPMethods.delete.rawValue
+
+		networkHandler.transferMahOptionalDatas(with: request, completion: completion)
 	}
 
 	func fetchTasksFromServer(completion: @escaping (Result<[TaskRepresentation], NetworkError>) -> Void) {
@@ -60,29 +80,37 @@ class TaskController {
 
 
 	private func updateTasks(with taskRepresentations: [TaskRepresentation]) throws {
-		for taskRep in taskRepresentations {
-			guard let identifier = UUID(uuidString: taskRep.identifier) else { continue }
-			if let task = getTaskFromCoreData(forUUID: identifier) {
-				task.name = taskRep.name
-				task.notes = taskRep.notes
-				task.setPriority(str: taskRep.priority)
-			} else {
-				_ = Task(taskRepresentation: taskRep)
+		let backgroundContext = CoreDataStack.shared.container.newBackgroundContext()
+
+		backgroundContext.performAndWait {
+			for taskRep in taskRepresentations {
+				guard let identifier = UUID(uuidString: taskRep.identifier) else { continue }
+				if let task = getTaskFromCoreData(forUUID: identifier, onContext: backgroundContext) {
+					task.name = taskRep.name
+					task.notes = taskRep.notes
+					task.setPriority(str: taskRep.priority)
+				} else {
+					_ = Task(taskRepresentation: taskRep, context: backgroundContext)
+				}
 			}
 		}
-		try saveToPersistentStore()
+		//background
+		try CoreDataStack.shared.save(context: backgroundContext)
 	}
 
-	private func getTaskFromCoreData(forUUID uuid: UUID) -> Task? {
+	// We can get a task from any context and do it safely (thread safe)
+	private func getTaskFromCoreData(forUUID uuid: UUID, onContext context: NSManagedObjectContext) -> Task? {
 		let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
 		fetchRequest.predicate = NSPredicate(format: "identifier == %@", uuid as NSUUID)
-		do {
-			let moc = CoreDataStack.shared.mainContext
-			return try moc.fetch(fetchRequest).first
-		} catch {
-			NSLog("error fetching task with id '\(uuid)': \(error)")
-			return nil
+		var result: Task?
+		context.performAndWait {
+			do {
+				result = try context.fetch(fetchRequest).first
+			} catch {
+				NSLog("error fetching task with id '\(uuid)': \(error)")
+			}
 		}
+		return result
 	}
 
 	func saveToPersistentStore() throws {
