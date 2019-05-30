@@ -35,7 +35,7 @@ class TasksTableViewController: UITableViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		taskController.fetchTasksFromserver { [weak self] (result: Result<[TaskRepresentation], NetworkError>) in
+		taskController.fetchTasksFromServer { [weak self] (result: Result<[TaskRepresentation], NetworkError>) in
 			DispatchQueue.main.async {
 				do {
 					_ = try result.get()

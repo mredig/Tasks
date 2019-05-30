@@ -42,7 +42,7 @@ class TaskController {
 
 	}
 
-	func fetchTasksFromserver(completion: @escaping (Result<[TaskRepresentation], NetworkError>) -> Void) {
+	func fetchTasksFromServer(completion: @escaping (Result<[TaskRepresentation], NetworkError>) -> Void) {
 		let requestURL = baseURL.appendingPathExtension("json")
 
 		let request = URLRequest(url: requestURL)
